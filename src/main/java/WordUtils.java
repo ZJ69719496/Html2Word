@@ -756,6 +756,13 @@ public class WordUtils {
                 }
 
                 try {
+                    //中文的编码转换
+                    int lastIndexOf = href.lastIndexOf('/');
+                    String fileName = href.substring(lastIndexOf + 1);
+                    String newFileName = URLEncoder.encode(fileName, "utf-8");
+                    String subUrl = href.substring(0,lastIndexOf + 1);
+                    href = subUrl + newFileName;
+                    
                     Image image = Image.getInstance(new URL(href));
                     image.scaleAbsolute((int) width, (int) height);
                     image.setAlignment(Image.LEFT);

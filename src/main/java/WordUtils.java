@@ -725,7 +725,6 @@ public class WordUtils {
                                 colSize++;
                             }
                         }
-
                     }
                 }
             }
@@ -744,12 +743,12 @@ public class WordUtils {
         if (node.hasAttr("src")) {
             String href = node.attr("src");
             if (!"".equals(href)) {
-                double width = 50;
+                double width = 0.0;
                 if (node.hasAttr("width")) {
                     String widthStr = node.attr("width");
                     width = Double.parseDouble(widthStr);
                 }
-                double height = 50;
+                double height = 0.0;
                 if (node.hasAttr("height")) {
                     String heightStr = node.attr("height");
                     height = Double.parseDouble(heightStr);
@@ -763,7 +762,21 @@ public class WordUtils {
                     String subUrl = href.substring(0,lastIndexOf + 1);
                     href = subUrl + newFileName;
                     
+                    System.out.println("image href = " + href);
+                    
                     Image image = Image.getInstance(new URL(href));
+                    
+                    if(width==0.0){
+                        width = image.getPlainWidth()*0.75;
+                    }else{
+                        width*=0.75;
+                    }
+                    if(height==0.0){
+                        height = image.getPlainHeight()*0.75;
+                    }else {
+                        height*=0.75;
+                    }
+                    
                     image.scaleAbsolute((int) width, (int) height);
                     image.setAlignment(Image.LEFT);
                     Chunk c = new Chunk(image, 0, 0);

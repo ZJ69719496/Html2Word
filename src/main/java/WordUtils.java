@@ -152,28 +152,40 @@ public class WordUtils {
         p.setIndentationLeft((level + 1) * 10);
         HashMap<String, String> attrs = new HashMap<>(parentAttrs);
         String name = node.nodeName();
-        if ("p".equals(name)) {
-            createParagraph(p, node, attrs);
-        } else if ("table".equals(name)) {
-            createTable(p, node, attrs);
-        } else if ("ol".equals(name)) {
-            createOl(p, node, attrs);
-        } else if ("ul".equals(name)) {
-            createUl(p, node, attrs);
-        } else if ("a".equals(name)) {
-            createLink(p, node, attrs);
-        }else if ("h1".equals(name)) {
-            createH1(p, node, attrs);
-        }else if ("h2".equals(name)) {
-            createH2(p, node, attrs);
-        }else if ("h3".equals(name)) {
-            createH3(p, node, attrs);
-        }else if ("h4".equals(name)) {
-            createH4(p, node, attrs);
-        }else if ("h5".equals(name)) {
-            createH5(p, node, attrs);
-        }else if ("h6".equals(name)) {
-            createH6(p, node, attrs);
+        switch(name){
+            case "p":
+                createParagraph(p, node, attrs);
+            break;
+            case "table":
+                createTable(p, node, attrs);
+                break;
+            case "ol":
+                createOl(p, node, attrs);
+                break;
+            case "ul":
+                createUl(p, node, attrs);
+                break;
+            case "a":
+                createLink(p, node, attrs);
+                break;
+            case "h1":
+                createH1(p, node, attrs);
+                break;
+            case "h2":
+                createH2(p, node, attrs);
+                break;
+            case "h3":
+                createH3(p, node, attrs);
+                break;
+            case "h4":
+                createH4(p, node, attrs);
+                break;
+            case "h5":
+                createH5(p, node, attrs);
+                break;
+            case "h6":
+                createH6(p, node, attrs);
+                break;
         }
         document.add(p);
     }

@@ -10,13 +10,13 @@ import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import java.awt.*;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.List;
 
 public class WordUtils {
-
 
     /**
      * 创建主标题
@@ -162,9 +162,184 @@ public class WordUtils {
             createUl(p, node, attrs);
         } else if ("a".equals(name)) {
             createLink(p, node, attrs);
+        }else if ("h1".equals(name)) {
+            createH1(p, node, attrs);
+        }else if ("h2".equals(name)) {
+            createH2(p, node, attrs);
+        }else if ("h3".equals(name)) {
+            createH3(p, node, attrs);
+        }else if ("h4".equals(name)) {
+            createH4(p, node, attrs);
+        }else if ("h5".equals(name)) {
+            createH5(p, node, attrs);
+        }else if ("h6".equals(name)) {
+            createH6(p, node, attrs);
         }
         document.add(p);
     }
+
+    /**
+     *
+     * @param paragraph
+     * @param h1Node
+     * @param selfAttrs
+     * @throws IOException
+     * @throws DocumentException
+     */
+    private void createH1(Paragraph paragraph, Node h1Node, HashMap<String, String> selfAttrs) throws IOException, DocumentException {
+        Phrase content = new Phrase();
+        Font font=content.getFont();
+        font.setSize(24);
+        font.setStyle(1);
+        content.setFont(font);
+
+        for (Node childNode : h1Node.childNodes()) {
+            String name = childNode.nodeName();
+            if (!"#text".equals(name)) {
+                //递归创建子节点
+                createParagraphContent(content, childNode, selfAttrs);
+            } else {
+                content.add(childNode.toString().replace("&nbsp;", ""));
+            }
+        }
+
+        paragraph.add(content);
+    }
+
+//    private void SetStyle(Font font, HashMap<String, String> selfAttrs){
+//        String color = selfAttrs.getOrDefault("color", "");
+//        if(String.isEmpty(color)){
+//            font.setColor();
+//        }
+//    }
+
+    /**
+     *
+     * @param paragraph
+     * @param h1Node
+     * @param selfAttrs
+     * @throws IOException
+     * @throws DocumentException
+     */
+    private void createH2(Paragraph paragraph, Node h1Node, HashMap<String, String> selfAttrs) throws IOException, DocumentException {
+        Phrase content = new Phrase();
+        Font font=content.getFont();
+        font.setSize(18);
+        font.setStyle(1);
+        content.setFont(font);
+
+        for (Node childNode : h1Node.childNodes()) {
+            String name = childNode.nodeName();
+            if (!"#text".equals(name)) {
+                //递归创建子节点
+                createParagraphContent(content, childNode, selfAttrs);
+            } else {
+                content.add(childNode.toString().replace("&nbsp;", ""));
+            }
+        }
+
+        paragraph.add(content);
+    }
+
+    /**
+     *
+     * @param paragraph
+     * @param h1Node
+     * @param selfAttrs
+     * @throws IOException
+     * @throws DocumentException
+     */
+    private void createH3(Paragraph paragraph, Node h1Node, HashMap<String, String> selfAttrs) throws IOException, DocumentException {
+        Phrase content = new Phrase();
+        Font font=content.getFont();
+        font.setSize(15);
+        font.setStyle(1);
+        content.setFont(font);
+
+        for (Node childNode : h1Node.childNodes()) {
+            String name = childNode.nodeName();
+            if (!"#text".equals(name)) {
+                //递归创建子节点
+                createParagraphContent(content, childNode, selfAttrs);
+            } else {
+                content.add(childNode.toString().replace("&nbsp;", ""));
+            }
+        }
+
+        paragraph.add(content);
+    }
+
+    /**
+     *
+     * @param paragraph
+     * @param h1Node
+     * @param selfAttrs
+     * @throws IOException
+     * @throws DocumentException
+     */
+    private void createH4(Paragraph paragraph, Node h1Node, HashMap<String, String> selfAttrs) throws IOException, DocumentException {
+        Phrase content = new Phrase();
+        Font font=content.getFont();
+        font.setSize(12.4f);
+        font.setStyle(1);
+        content.setFont(font);
+
+        for (Node childNode : h1Node.childNodes()) {
+            String name = childNode.nodeName();
+            if (!"#text".equals(name)) {
+                //递归创建子节点
+                createParagraphContent(content, childNode, selfAttrs);
+            } else {
+                content.add(childNode.toString().replace("&nbsp;", ""));
+            }
+        }
+
+        paragraph.add(content);
+    }
+
+    private void createH5(Paragraph paragraph, Node h1Node, HashMap<String, String> selfAttrs) throws IOException, DocumentException {
+        Phrase content = new Phrase();
+        Font font=content.getFont();
+        font.setSize(10.2f);
+        font.setStyle(1);
+        content.setFont(font);
+
+        for (Node childNode : h1Node.childNodes()) {
+            String name = childNode.nodeName();
+            if (!"#text".equals(name)) {
+                //递归创建子节点
+                createParagraphContent(content, childNode, selfAttrs);
+            } else {
+                content.add(childNode.toString().replace("&nbsp;", ""));
+            }
+        }
+
+        paragraph.add(content);
+    }
+
+    private void createH6(Paragraph paragraph, Node h1Node, HashMap<String, String> selfAttrs) throws IOException, DocumentException {
+        Phrase content = new Phrase();
+        Font font=content.getFont();
+        font.setSize(9.4f);
+        font.setStyle(1);
+        content.setFont(font);
+
+        for (Node childNode : h1Node.childNodes()) {
+            String name = childNode.nodeName();
+            if (!"#text".equals(name)) {
+                //递归创建子节点
+                createParagraphContent(content, childNode, selfAttrs);
+            } else {
+                content.add(childNode.toString().replace("&nbsp;", ""));
+            }
+        }
+
+        paragraph.add(content);
+    }
+
+
+
+
 
     /**
      * 获取节点样式
@@ -285,6 +460,9 @@ public class WordUtils {
                 break;
             case "em":
                 createEm(content, node, selfAttrs);
+                break;
+            case "br":
+                content.add(Chunk.NEWLINE);
                 break;
         }
     }
@@ -725,6 +903,7 @@ public class WordUtils {
                                 colSize++;
                             }
                         }
+
                     }
                 }
             }
@@ -755,17 +934,15 @@ public class WordUtils {
                 }
 
                 try {
-                    //中文的编码转换
                     int lastIndexOf = href.lastIndexOf('/');
                     String fileName = href.substring(lastIndexOf + 1);
                     String newFileName = URLEncoder.encode(fileName, "utf-8");
                     String subUrl = href.substring(0,lastIndexOf + 1);
                     href = subUrl + newFileName;
-                    
+
                     System.out.println("image href = " + href);
-                    
+
                     Image image = Image.getInstance(new URL(href));
-                    
                     if(width==0.0){
                         width = image.getPlainWidth()*0.75;
                     }else{
@@ -776,13 +953,12 @@ public class WordUtils {
                     }else {
                         height*=0.75;
                     }
-                    
-                    image.scaleAbsolute((int) width, (int) height);
+                    image.scaleAbsolute((int)width, (int)height);
                     image.setAlignment(Image.LEFT);
                     Chunk c = new Chunk(image, 0, 0);
                     phrase.add(c);
                 } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
+                    System.out.println("无法下载: "+ex.getMessage());
                 }
             }
         }

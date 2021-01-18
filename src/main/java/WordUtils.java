@@ -456,9 +456,17 @@ public class WordUtils {
                 createImg(content, node);
                 break;
             case "strong":
+            case "b":
                 createStrong(content, node, selfAttrs);
                 break;
             case "em":
+            case "i":
+                createEm(content, node, selfAttrs);
+                break;
+            case "u":
+                createEm(content, node, selfAttrs);
+                break;
+            case "s":
                 createEm(content, node, selfAttrs);
                 break;
             case "br":

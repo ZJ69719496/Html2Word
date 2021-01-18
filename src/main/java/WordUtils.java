@@ -464,15 +464,75 @@ public class WordUtils {
                 createEm(content, node, selfAttrs);
                 break;
             case "u":
-                createEm(content, node, selfAttrs);
+                createU(content, node, selfAttrs);
                 break;
             case "s":
-                createEm(content, node, selfAttrs);
+                createS(content, node, selfAttrs);
                 break;
             case "br":
                 content.add(Chunk.NEWLINE);
                 break;
         }
+    }
+    
+    /**
+     * 创建删除线
+     *
+     * @param phrase 容器
+     * @param sNode 节点
+     * @param selfAttrs 属性集合
+     */
+    private void createS(Phrase phrase, Node sNode, HashMap<String, String> selfAttrs) throws IOException, DocumentException {
+        selfAttrs.put("s", "true");
+        Phrase emContent = new Phrase();
+        Font fontEm = emContent.getFont();
+        fontEm.setStyle(8);
+        emContent.setFont(fontEm);
+        for (Node childNode : sNode.childNodes()) {
+            if (!"#text".equals(childNode.nodeName())) {
+                createParagraphContent(emContent, childNode, selfAttrs);
+            } else {
+                Chunk link = new Chunk(childNode.toString().replace(" ", "").replace("&nbsp;", ""));
+                String backgroundColor = selfAttrs.getOrDefault("background-color", "not found");
+                if (!backgroundColor.equals("not found")) {
+                    if (backgroundColor.startsWith("#")) {
+                        link.setBackground(Color.decode(backgroundColor));
+                    }
+                }
+                emContent.add(link);
+            }
+        }
+        phrase.add(emContent);
+    }
+
+    /**
+     * 创建下划线
+     *
+     * @param phrase 容器
+     * @param uNode 节点
+     * @param selfAttrs 属性集合
+     */
+    private void createU(Phrase phrase, Node uNode, HashMap<String, String> selfAttrs) throws IOException, DocumentException {
+        selfAttrs.put("u", "true");
+        Phrase emContent = new Phrase();
+        Font fontEm = emContent.getFont();
+        fontEm.setStyle(4);
+        emContent.setFont(fontEm);
+        for (Node childNode : uNode.childNodes()) {
+            if (!"#text".equals(childNode.nodeName())) {
+                createParagraphContent(emContent, childNode, selfAttrs);
+            } else {
+                Chunk link = new Chunk(childNode.toString().replace(" ", "").replace("&nbsp;", ""));
+                String backgroundColor = selfAttrs.getOrDefault("background-color", "not found");
+                if (!backgroundColor.equals("not found")) {
+                    if (backgroundColor.startsWith("#")) {
+                        link.setBackground(Color.decode(backgroundColor));
+                    }
+                }
+                emContent.add(link);
+            }
+        }
+        phrase.add(emContent);
     }
 
     /**
@@ -603,7 +663,6 @@ public class WordUtils {
                 strongContent.add(link);
             }
         }
-
         content.add(strongContent);
     }
 
@@ -634,7 +693,6 @@ public class WordUtils {
                 emContent.add(link);
             }
         }
-
         phrase.add(emContent);
     }
 

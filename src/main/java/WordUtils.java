@@ -472,7 +472,72 @@ public class WordUtils {
             case "br":
                 content.add(Chunk.NEWLINE);
                 break;
+           case "sup":
+                createSup(content, node, selfAttrs);
+                break;
+            case "sub":
+                createSub(content, node, selfAttrs);
+                break;
         }
+    }
+    
+    /**
+     * 
+     * @param phrase
+     * @param node
+     * @param selfAttrs
+     */
+    private void createSub(Phrase phrase, Node node, HashMap<String, String> selfAttrs) throws IOException, DocumentException {
+        selfAttrs.put("s", "true");
+        Phrase emContent = new Phrase();
+        for (Node childNode : node.childNodes()) {
+            if (!"#text".equals(childNode.nodeName())) {
+                createParagraphContent(emContent, childNode, selfAttrs);
+            } else {
+                Chunk link = new Chunk(childNode.toString().replace(" ", "").replace("&nbsp;", ""));
+                link.setTextRise(-6);
+                String backgroundColor = selfAttrs.getOrDefault("background-color", "not found");
+                if (!backgroundColor.equals("not found")) {
+                    if (backgroundColor.startsWith("#")) {
+                        link.setBackground(Color.decode(backgroundColor));
+
+                    }
+                }
+                emContent.add(link);
+            }
+        }
+
+        phrase.add(emContent);
+    }
+
+    /**
+     * 
+     * @param phrase
+     * @param node
+     * @param selfAttrs
+     * @throws IOException
+     * @throws DocumentException
+     */
+    private void createSup(Phrase phrase, Node node, HashMap<String, String> selfAttrs) throws IOException, DocumentException {
+        selfAttrs.put("s", "true");
+        Phrase emContent = new Phrase();
+        for (Node childNode : node.childNodes()) {
+            if (!"#text".equals(childNode.nodeName())) {
+                createParagraphContent(emContent, childNode, selfAttrs);
+            } else {
+                Chunk link = new Chunk(childNode.toString().replace(" ", "").replace("&nbsp;", ""));
+                link.setTextRise(6);
+                String backgroundColor = selfAttrs.getOrDefault("background-color", "not found");
+                if (!backgroundColor.equals("not found")) {
+                    if (backgroundColor.startsWith("#")) {
+                        link.setBackground(Color.decode(backgroundColor));
+                    }
+                }
+                emContent.add(link);
+            }
+        }
+
+        phrase.add(emContent);
     }
     
     /**
